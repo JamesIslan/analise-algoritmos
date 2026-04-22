@@ -30,66 +30,119 @@ void exportarParaCSV(string nomeArquivo,
   }
 }
 
-void medirTempoExecucao() {
-  vector<tuple<int, double>> resBuscaSequencial, resBuscaBinaria,
-      resSelectionSort, resInsertionSort;
+void preencherVetor(vector<int> &vetor, int numValores) {
+  // GERAÇÃO DE SEED RANDOMICA
   random_device rd;
   mt19937 gen(rd());
   uniform_int_distribution<> dis(1, 1000000);
 
-  int chave = -1;
+  // PREENCHIMENTO DE VETOR
+  for (int i = 0; i < numValores; i++)
+    vetor[i] = dis(gen);
+};
 
-  for (int n = 10; n <= 20000; n += 100) {
+// Criação de template para executar algoritmo genérico
+// template <typename Algoritmo>
+// void executarBusca(Algoritmo algoritmo, string tipoBusca) {
+//   int chave = -1; // Chave não existente para forçar pior caso
+//   cout << "Executando " << tipoBusca << " ..." << endl;
+//   algoritmo();
+//   std::cout << "Finalizada." << std::endl;
+// }
+
+void rodarBuscaSequencial(vector<tuple<int, double>> &tuplaValores, int maxItens) {
+  int chave = -1; // Chave não existente para forçar pior caso
+
+  cout << "Executando busca sequencial..." << endl;
+  for (int n = 10; n <= maxItens; n += 100) {
+    vector<int> vetor(n);
+    preencherVetor(vetor, n);
     cout << "Testando n = " << n << "..." << endl;
 
-    vector<int> arrBase(n);
-    for (int i = 0; i < n; i++)
-      arrBase[i] = dis(gen);
-
-    // BUSCA SEQUENCIAL
+    // MEDIÇÃO DO TEMPO
     auto start = high_resolution_clock::now();
-    // buscaSequencial(arrBase, chave);
+    buscaSequencial(vetor, chave);
     auto stop = high_resolution_clock::now();
-    // // Usando duration com double em milissegundos nativamente
-    // duration<double, std::milli> tempoSeq = stop - start;
-    // resBuscaSequencial.push_back(make_tuple(n, tempoSeq.count()));
+    duration<double, std::milli> tempoSeq = stop - start;
 
-    // BUSCA BINÁRIA
-    // vector<int> arrOrdenado = arrBase;
-    // sort(arrOrdenado.begin(), arrOrdenado.end());
-    // start = high_resolution_clock::now();
-    // buscaBinaria(arrOrdenado, chave);
-    // stop = high_resolution_clock::now();
-    // duration<double, std::milli> tempoBin = stop - start;
-    // resBuscaBinaria.push_back(make_tuple(n, tempoBin.count()));
-
-    // SELECTION SORT
-    // vector<int> arrSel = arrBase;
-    // start = high_resolution_clock::now();
-    // selectionSort(arrSel);
-    // stop = high_resolution_clock::now();
-    // duration<double, std::milli> tempoSel = stop - start;
-    // resSelectionSort.push_back(make_tuple(n, tempoSel.count()));
-
-    // INSERTION SORT
-    vector<int> arrIns = arrBase;
-    start = high_resolution_clock::now();
-    insertionSort(arrIns);
-    stop = high_resolution_clock::now();
-    duration<double, std::milli> tempoIns = stop - start;
-    resInsertionSort.push_back(make_tuple(n, tempoIns.count()));
+    // ADIÇÃO DO PAR (N, TEMPO)
+    tuplaValores.push_back(make_tuple(n, tempoSeq.count()));
   }
+};
 
-  // Exportando cada vetor para seu respectivo arquivo CSV
-  cout << "\nExportando resultados..." << endl;
-  // exportarParaCSV("busca_sequencial.csv", resBuscaSequencial);
-  // exportarParaCSV("busca_binaria.csv", resBuscaBinaria);
-  // exportarParaCSV("selection_sort.csv", resSelectionSort);
-  exportarParaCSV("insertion_sort.csv", resInsertionSort);
+void rodarBuscaBinaria(vector<tuple<int, double>> &tuplaValores, int maxItens) {
+  int chave = -1; // Chave não existente para forçar pior caso
+
+  cout << "Executando busca binária..." << endl;
+  for (int n = 10; n <= maxItens; n += 100) {
+    vector<int> vetor(n);
+    preencherVetor(vetor, n);
+    cout << "Testando n = " << n << "..." << endl;
+
+    // MEDIÇÃO DO TEMPO
+    auto start = high_resolution_clock::now();
+    buscaBinaria(vetor, chave);
+    auto stop = high_resolution_clock::now();
+    duration<double, std::milli> tempoSeq = stop - start;
+
+    // ADIÇÃO DO PAR (N, TEMPO)
+    tuplaValores.push_back(make_tuple(n, tempoSeq.count()));
+  }
 }
+
+void rodarSelectionSort(vector<tuple<int, double>> &tuplaValores, int maxItens) {
+  cout << "Executando selection sort..." << endl;
+  for (int n = 10; n <= maxItens; n += 1000) {
+    vector<int> vetor(n);
+    preencherVetor(vetor, n);
+    cout << "Testando n = " << n << "..." << endl;
+
+    // MEDIÇÃO DO TEMPO
+    auto start = high_resolution_clock::now();
+    selectionSort(vetor);
+    auto stop = high_resolution_clock::now();
+    duration<double, std::milli> tempoSeq = stop - start;
+
+    // ADIÇÃO DO PAR (N, TEMPO)
+    tuplaValores.push_back(make_tuple(n, tempoSeq.count()));
+  }
+};
+void rodarInsertionSort(vector<tuple<int, double>> &tuplaValores, int maxItens) {
+  cout << "Executando insertion sort..." << endl;
+  for (int n = 10; n <= maxItens; n += 1000) {
+    vector<int> vetor(n);
+    preencherVetor(vetor, n);
+    cout << "Testando n = " << n << "..." << endl;
+
+    // MEDIÇÃO DO TEMPO
+    auto start = high_resolution_clock::now();
+    selectionSort(vetor);
+    auto stop = high_resolution_clock::now();
+    duration<double, std::milli> tempoSeq = stop - start;
+
+    // ADIÇÃO DO PAR (N, TEMPO)
+    tuplaValores.push_back(make_tuple(n, tempoSeq.count()));
+  }
+};
 
 int main() {
   cout << "Iniciando medicao de tempo dos algoritmos..." << endl;
-  medirTempoExecucao();
+  vector<tuple<int, double>> resBuscaSequencial, resBuscaBinaria, resSelectionSort, resInsertionSort;
+
+  // BUSCA SEQUENCIAL
+  rodarBuscaSequencial(resBuscaSequencial, 100000);
+  exportarParaCSV("busca_sequencial.csv", resBuscaSequencial);
+
+  // BUSCA BINÁRIA
+  rodarBuscaBinaria(resBuscaBinaria, 100000);
+  exportarParaCSV("busca_binaria.csv", resBuscaBinaria);
+
+  // SELECTION SORRT
+  rodarSelectionSort(resSelectionSort, 50000);
+  exportarParaCSV("selection_sort.csv", resSelectionSort);
+
+  // INSERTION SORRT
+  rodarInsertionSort(resInsertionSort, 50000);
+  exportarParaCSV("insertion_sort.csv", resInsertionSort);
   return 0;
 }
