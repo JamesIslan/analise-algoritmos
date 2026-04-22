@@ -3,9 +3,9 @@
 
 #include <vector>
 
-void buscaSequencial(int n, int chave);
-void buscaBinaria(int n, int chave);
-void selectionSort(int n);
-void insertionSort(int n);
+void buscaSequencial(const std::vector<int> &arr, int chave);
+void buscaBinaria(const std::vector<int> &arr, int chave);
+void selectionSort(std::vector<int> &arr);
+void insertionSort(std::vector<int> &arr);
 
 #endif
