@@ -1,12 +1,8 @@
 #include "algorithms.h"
 #include <vector>
 
-void buscaBinaria(int n, int chave) {
-  std::vector<int> arr(n);
-  for (int i = 0; i < n; i++) {
-    arr[i] = i;
-  }
-
+void buscaBinaria(const std::vector<int> &arr, int chave) {
+  int n = arr.size();
   int esq = 0;
   int dir = n - 1;
 
