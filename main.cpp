@@ -131,18 +131,18 @@ int main() {
 
   // BUSCA SEQUENCIAL
   rodarBuscaSequencial(resBuscaSequencial, 100000);
-  exportarParaCSV("busca_sequencial.csv", resBuscaSequencial);
+  exportarParaCSV("amostras/busca_sequencial.csv", resBuscaSequencial);
 
   // BUSCA BINÁRIA
   rodarBuscaBinaria(resBuscaBinaria, 100000);
-  exportarParaCSV("busca_binaria.csv", resBuscaBinaria);
+  exportarParaCSV("amostras/busca_binaria.csv", resBuscaBinaria);
 
   // SELECTION SORRT
   rodarSelectionSort(resSelectionSort, 50000);
-  exportarParaCSV("selection_sort.csv", resSelectionSort);
+  exportarParaCSV("amostras/selection_sort.csv", resSelectionSort);
 
   // INSERTION SORRT
   rodarInsertionSort(resInsertionSort, 50000);
-  exportarParaCSV("insertion_sort.csv", resInsertionSort);
+  exportarParaCSV("amostras/insertion_sort.csv", resInsertionSort);
   return 0;
 }
