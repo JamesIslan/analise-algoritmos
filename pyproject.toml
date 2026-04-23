@@ -1,0 +1,6 @@
+[project]
+name = "analise-algoritmos"
+version = "0.1.0"
+description = "Análise empírica de complexidade de algoritmos."
+requires-python = ">=3.14"
+dependencies = ["jupyter>=1.1.1", "matplotlib>=3.10.8", "pandas>=3.0.2"]
