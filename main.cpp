@@ -117,19 +117,19 @@ int main() {
 
   // BUSCAS
 
-  // rodarBuscaSequencial(resBuscaSequencial, 10000000);
-  // exportarParaCSV("amostras/busca_sequencial.csv", resBuscaSequencial);
+  rodarBuscaSequencial(resBuscaSequencial, 10000000);
+  exportarParaCSV("amostras/busca_sequencial.csv", resBuscaSequencial);
 
-  // rodarBuscaBinaria(resBuscaBinaria, 10000000);
-  // exportarParaCSV("amostras/busca_binaria.csv", resBuscaBinaria);
+  rodarBuscaBinaria(resBuscaBinaria, 10000000);
+  exportarParaCSV("amostras/busca_binaria.csv", resBuscaBinaria);
 
   // ORDENAÇÃO
 
-  // rodarSelectionSort(resSelectionSort, 50000);
-  // exportarParaCSV("amostras/selection_sort.csv", resSelectionSort);
+  rodarSelectionSort(resSelectionSort, 50000);
+  exportarParaCSV("amostras/selection_sort.csv", resSelectionSort);
 
-  // rodarInsertionSort(resInsertionSort, 50000);
-  // exportarParaCSV("amostras/insertion_sort.csv", resInsertionSort);
+  rodarInsertionSort(resInsertionSort, 50000);
+  exportarParaCSV("amostras/insertion_sort.csv", resInsertionSort);
 
   return 0;
 }
