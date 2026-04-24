@@ -46,7 +46,7 @@ void preencherVetorOrdenado(vector<int> &vetor, int n) {
 void rodarBuscaSequencial(vector<tuple<int, double>> &tuplaValores,
                           int maxItens) {
   cout << "Executando Busca Sequencial..." << endl;
-  for (int n = 10; n <= maxItens; n += 10000) {
+  for (int n = 10; n <= maxItens; n += 10000) { // Iterando até vetor com tamanho maxItens
     vector<int> vetor(n);
     preencherVetorOrdenado(vetor, n);
     cout << "Testando n = " << n << "..." << endl;
@@ -63,7 +63,7 @@ void rodarBuscaSequencial(vector<tuple<int, double>> &tuplaValores,
 
 void rodarBuscaBinaria(vector<tuple<int, double>> &tuplaValores, int maxItens) {
   cout << "Executando Busca Binária..." << endl;
-  for (int n = 10; n <= maxItens; n += 10000) {
+  for (int n = 10; n <= maxItens; n += 10000) { // Iterando até vetor com tamanho maxItens
     vector<int> vetor(n);
     preencherVetorOrdenado(vetor, n);
     cout << "Testando n = " << n << "..." << endl;
@@ -80,7 +80,7 @@ void rodarBuscaBinaria(vector<tuple<int, double>> &tuplaValores, int maxItens) {
 void rodarSelectionSort(vector<tuple<int, double>> &tuplaValores,
                         int maxItens) {
   cout << "Executando Selection Sort..." << endl;
-  for (int n = 10; n <= maxItens; n += 1000) {
+  for (int n = 10; n <= maxItens; n += 1000) { // Iterando até vetor com tamanho maxItens
     vector<int> vetor(n);
     preencherVetorPiorCasoOrdenacao(vetor, n);
     cout << "Testando n = " << n << "..." << endl;
@@ -97,7 +97,7 @@ void rodarSelectionSort(vector<tuple<int, double>> &tuplaValores,
 void rodarInsertionSort(vector<tuple<int, double>> &tuplaValores,
                         int maxItens) {
   cout << "Executando Insertion Sort..." << endl;
-  for (int n = 10; n <= maxItens; n += 1000) {
+  for (int n = 10; n <= maxItens; n += 1000) { // Iterando até vetor com tamanho maxItens
     vector<int> vetor(n);
     preencherVetorPiorCasoOrdenacao(vetor, n);
     cout << "Testando n = " << n << "..." << endl;
