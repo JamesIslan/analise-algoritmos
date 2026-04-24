@@ -1,10 +1,9 @@
 #include "algoritmos/algorithms.h"
-#include <algorithm>
 #include <chrono>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
-#include <random>
+#include <string>
 #include <tuple>
 #include <vector>
 
@@ -30,119 +29,107 @@ void exportarParaCSV(string nomeArquivo,
   }
 }
 
-void preencherVetor(vector<int> &vetor, int numValores) {
-  // GERAÇÃO DE SEED RANDOMICA
-  random_device rd;
-  mt19937 gen(rd());
-  uniform_int_distribution<> dis(1, 1000000);
-
-  // PREENCHIMENTO DE VETOR
-  for (int i = 0; i < numValores; i++)
-    vetor[i] = dis(gen);
-};
-
-// Criação de template para executar algoritmo genérico
-// template <typename Algoritmo>
-// void executarBusca(Algoritmo algoritmo, string tipoBusca) {
-//   int chave = -1; // Chave não existente para forçar pior caso
-//   cout << "Executando " << tipoBusca << " ..." << endl;
-//   algoritmo();
-//   std::cout << "Finalizada." << std::endl;
-// }
-
-void rodarBuscaSequencial(vector<tuple<int, double>> &tuplaValores, int maxItens) {
-  int chave = -1; // Chave não existente para forçar pior caso
-
-  cout << "Executando busca sequencial..." << endl;
-  for (int n = 10; n <= maxItens; n += 100) {
-    vector<int> vetor(n);
-    preencherVetor(vetor, n);
-    cout << "Testando n = " << n << "..." << endl;
-
-    // MEDIÇÃO DO TEMPO
-    auto start = high_resolution_clock::now();
-    buscaSequencial(vetor, chave);
-    auto stop = high_resolution_clock::now();
-    duration<double, std::milli> tempoSeq = stop - start;
-
-    // ADIÇÃO DO PAR (N, TEMPO)
-    tuplaValores.push_back(make_tuple(n, tempoSeq.count()));
+// Preenchimento para ordenação (pior caso: decrescente)
+void preencherVetorPiorCasoOrdenacao(vector<int> &vetor, int n) {
+  for (int i = 0; i < n; i++) {
+    vetor[i] = n - i;
   }
-};
+}
 
-void rodarBuscaBinaria(vector<tuple<int, double>> &tuplaValores, int maxItens) {
-  int chave = -1; // Chave não existente para forçar pior caso
+// Preenchimento para busca (vetor ordenado crescente)
+void preencherVetorOrdenado(vector<int> &vetor, int n) {
+  for (int i = 0; i < n; i++) {
+    vetor[i] = i;
+  }
+}
 
-  cout << "Executando busca binária..." << endl;
-  for (int n = 10; n <= maxItens; n += 100) {
+void rodarBuscaSequencial(vector<tuple<int, double>> &tuplaValores,
+                          int maxItens) {
+  cout << "Executando Busca Sequencial..." << endl;
+  for (int n = 10; n <= maxItens; n += 10000) {
     vector<int> vetor(n);
-    preencherVetor(vetor, n);
+    preencherVetorOrdenado(vetor, n);
     cout << "Testando n = " << n << "..." << endl;
 
-    // MEDIÇÃO DO TEMPO
     auto start = high_resolution_clock::now();
-    buscaBinaria(vetor, chave);
+    // Busca por um valor que não existe para forçar percorrer tudo
+    buscaSequencial(vetor, -1);
     auto stop = high_resolution_clock::now();
     duration<double, std::milli> tempoSeq = stop - start;
 
-    // ADIÇÃO DO PAR (N, TEMPO)
     tuplaValores.push_back(make_tuple(n, tempoSeq.count()));
   }
 }
 
-void rodarSelectionSort(vector<tuple<int, double>> &tuplaValores, int maxItens) {
-  cout << "Executando selection sort..." << endl;
-  for (int n = 10; n <= maxItens; n += 1000) {
+void rodarBuscaBinaria(vector<tuple<int, double>> &tuplaValores, int maxItens) {
+  cout << "Executando Busca Binária..." << endl;
+  for (int n = 10; n <= maxItens; n += 10000) {
     vector<int> vetor(n);
-    preencherVetor(vetor, n);
+    preencherVetorOrdenado(vetor, n);
     cout << "Testando n = " << n << "..." << endl;
 
-    // MEDIÇÃO DO TEMPO
+    auto start = high_resolution_clock::now();
+    buscaBinaria(vetor, -1);
+    auto stop = high_resolution_clock::now();
+    duration<double, std::milli> tempoSeq = stop - start;
+
+    tuplaValores.push_back(make_tuple(n, tempoSeq.count()));
+  }
+}
+
+void rodarSelectionSort(vector<tuple<int, double>> &tuplaValores,
+                        int maxItens) {
+  cout << "Executando Selection Sort..." << endl;
+  for (int n = 10; n <= maxItens; n += 1000) {
+    vector<int> vetor(n);
+    preencherVetorPiorCasoOrdenacao(vetor, n);
+    cout << "Testando n = " << n << "..." << endl;
+
     auto start = high_resolution_clock::now();
     selectionSort(vetor);
     auto stop = high_resolution_clock::now();
     duration<double, std::milli> tempoSeq = stop - start;
 
-    // ADIÇÃO DO PAR (N, TEMPO)
     tuplaValores.push_back(make_tuple(n, tempoSeq.count()));
   }
-};
-void rodarInsertionSort(vector<tuple<int, double>> &tuplaValores, int maxItens) {
-  cout << "Executando insertion sort..." << endl;
+}
+
+void rodarInsertionSort(vector<tuple<int, double>> &tuplaValores,
+                        int maxItens) {
+  cout << "Executando Insertion Sort..." << endl;
   for (int n = 10; n <= maxItens; n += 1000) {
     vector<int> vetor(n);
-    preencherVetor(vetor, n);
+    preencherVetorPiorCasoOrdenacao(vetor, n);
     cout << "Testando n = " << n << "..." << endl;
 
-    // MEDIÇÃO DO TEMPO
     auto start = high_resolution_clock::now();
-    selectionSort(vetor);
+    insertionSort(vetor);
     auto stop = high_resolution_clock::now();
     duration<double, std::milli> tempoSeq = stop - start;
 
-    // ADIÇÃO DO PAR (N, TEMPO)
     tuplaValores.push_back(make_tuple(n, tempoSeq.count()));
   }
-};
+}
 
 int main() {
-  cout << "Iniciando medicao de tempo dos algoritmos..." << endl;
-  vector<tuple<int, double>> resBuscaSequencial, resBuscaBinaria, resSelectionSort, resInsertionSort;
+  vector<tuple<int, double>> resBuscaSequencial, resBuscaBinaria,
+      resSelectionSort, resInsertionSort;
 
-  // BUSCA SEQUENCIAL
-  rodarBuscaSequencial(resBuscaSequencial, 100000);
-  exportarParaCSV("amostras/busca_sequencial.csv", resBuscaSequencial);
+  // BUSCAS
 
-  // BUSCA BINÁRIA
-  rodarBuscaBinaria(resBuscaBinaria, 100000);
-  exportarParaCSV("amostras/busca_binaria.csv", resBuscaBinaria);
+  // rodarBuscaSequencial(resBuscaSequencial, 10000000);
+  // exportarParaCSV("amostras/busca_sequencial.csv", resBuscaSequencial);
 
-  // SELECTION SORRT
-  rodarSelectionSort(resSelectionSort, 50000);
-  exportarParaCSV("amostras/selection_sort.csv", resSelectionSort);
+  // rodarBuscaBinaria(resBuscaBinaria, 10000000);
+  // exportarParaCSV("amostras/busca_binaria.csv", resBuscaBinaria);
 
-  // INSERTION SORRT
-  rodarInsertionSort(resInsertionSort, 50000);
-  exportarParaCSV("amostras/insertion_sort.csv", resInsertionSort);
+  // ORDENAÇÃO
+
+  // rodarSelectionSort(resSelectionSort, 50000);
+  // exportarParaCSV("amostras/selection_sort.csv", resSelectionSort);
+
+  // rodarInsertionSort(resInsertionSort, 50000);
+  // exportarParaCSV("amostras/insertion_sort.csv", resInsertionSort);
+
   return 0;
 }
